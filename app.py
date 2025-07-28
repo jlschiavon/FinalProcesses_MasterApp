@@ -15,6 +15,16 @@ alds_file = st.file_uploader("📄 Cargar archivo ALDS (.csv)", type=["csv"])
 mes_file = st.file_uploader("📄 Cargar archivo MES (.xls, .xlsx)", type=["xls", "xlsx"])
 oee_file = st.file_uploader("📄 Cargar archivo OEE (.csv)", type=["csv"])
 
+# ---------- DEFINIR TURNOS Y PARTES ----------
+shifts = ["1st Shift", "2nd Shift", "3rd Shift"]
+orden_partes = [
+    "L-0G005-1036-17",
+    "L-0G005-0095-41",
+    "L-0G005-1015-05",
+    "L-0G005-1043-12"
+]
+index_completo = pd.MultiIndex.from_product([shifts, orden_partes], names=["Shift", "Parte"])
+
 if alds_file and mes_file and oee_file:
     df_alds = cargar_alds(alds_file)
     df_mes = cargar_mes(mes_file)
@@ -25,6 +35,7 @@ if alds_file and mes_file and oee_file:
     "Shift", "Parte", "MES", "ALDS Serie", "ALDS Rework",
     "OEE Serie", "OEE Rework", "MES SCRAP", "OEE SCRAP"
     ]]
+    tabla_final = tabla_final.set_index(["Shift", "Parte"]).reindex(index_completo, fill_value=0).reset_index()
 
     st.success("✅ Datos procesados correctamente")
     st.dataframe(tabla_final, use_container_width=True)
