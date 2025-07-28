@@ -47,7 +47,7 @@ oee_file = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
 # Botón para procesar todo
 df_result = None
 if st.sidebar.button("Procesar datos"):
-    if file_alds and file_mes and file_oee:
+    if alds_file and mes_file and oee_file:
         df_alds = cargar_alds(alds_file)
         df_mes = cargar_mes(mes_file)
         df_oee = cargar_oee(oee_file)
