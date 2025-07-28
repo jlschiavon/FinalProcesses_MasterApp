@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime, timedelta
 from utils.helpers import asignar_turno
 
 def cargar_mes(file):
@@ -9,11 +8,8 @@ def cargar_mes(file):
     index_completo = pd.MultiIndex.from_product([shifts, orden_partes], names=["Shift", "Parte"])
 
     dfMES = pd.read_excel(file)
-    dfMES["Tiempo actual"] = pd.to_datetime(dfMES["Tiempo actual"], format="%d.%m.%Y %H:%M:%S")
-    hoy = datetime.now()
-    inicio_rango = hoy - timedelta(days=1) + timedelta(hours=7)
-    fin_rango = hoy + timedelta(hours=6, minutes=59, seconds=59)
-    dfMES = dfMES[(dfMES["Tiempo actual"] >= inicio_rango) & (dfMES["Tiempo actual"] <= fin_rango)].copy()
+    dfMES["Tiempo actual"] = pd.to_datetime(dfMES["Tiempo actual"], format="%d.%m.%Y %H:%M:%S", errors="coerce")
+    dfMES.dropna(subset=["Tiempo actual"], inplace=True)
 
     dfMES["Shift"] = dfMES["Tiempo actual"].apply(asignar_turno)
     dfMES = dfMES[dfMES["Operation"] == 20]
