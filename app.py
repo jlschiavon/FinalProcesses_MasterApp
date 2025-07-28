@@ -34,7 +34,7 @@ if "scrap_fisico" not in st.session_state:
         ]
     }
 
-# --- Panel para ingresar scrap fisico ---
+# --- PANEL LATERAL PARA INGRESO DE CHATARRA FÍSICA ---
 st.sidebar.header("Ingreso de chatarra física")
 turnos = ["1st Shift", "2nd Shift", "3rd Shift"]
 partes = ["L-0G005-1036-17", "L-0G005-0095-41", "L-0G005-1015-05", "L-0G005-1043-12"]
@@ -42,9 +42,16 @@ partes = ["L-0G005-1036-17", "L-0G005-0095-41", "L-0G005-1015-05", "L-0G005-1043
 for turno in turnos:
     st.sidebar.subheader(turno)
     for parte in partes:
-        key = f"scrap_{turno}_{parte}".replace(" ", "_").replace("-", "_")
-        st.sidebar.number_input(
-            f"{parte}", min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
+        display_label = parte  # mantiene etiqueta legible
+        key = f"{turno}_{parte}"  # clave única que respeta orden original
+        if key not in st.session_state:
+            st.session_state[key] = 0
+        st.session_state.scrap_fisico[(turno, parte)] = st.sidebar.number_input(
+            label=display_label,
+            min_value=0,
+            step=1,
+            value=st.session_state[key],
+            key=key,
         )
 
 # Actualizar session_state.scrap_fisico **después**
