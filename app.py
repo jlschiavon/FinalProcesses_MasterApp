@@ -2,7 +2,10 @@ import streamlit as st
 import pandas as pd
 import os
 from datetime import datetime
-from app.utils import procesar_datos
+from utils.load_clean_alds import cargar_y_limpiar_alds
+from utils.load_clean_mes import cargar_y_limpiar_mes
+from utils.load_clean_oee import cargar_y_limpiar_oee
+from utils.helpers import unir_datos
 
 # Configuracion de pagina
 st.set_page_config(page_title="Master Daily Quantities Tracking CVT Final Processes", layout="wide")
@@ -44,7 +47,10 @@ file_oee = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
 df_result = None
 if st.sidebar.button("Procesar datos"):
     if file_alds and file_mes and file_oee:
-        df_result = procesar_datos(file_alds, file_mes, file_oee)
+        df_alds = cargar_y_limpiar_alds(file_alds)
+        df_mes = cargar_y_limpiar_mes(file_mes)
+        df_oee = cargar_y_limpiar_oee(file_oee)
+        df_result = unir_datos(df_alds, df_mes, df_oee)
 
         # Agregar columna "Físico" desde el scrap ingresado
         scrap_fisico_series = pd.Series(
