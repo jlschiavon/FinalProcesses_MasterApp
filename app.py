@@ -21,6 +21,10 @@ if alds_file and mes_file and oee_file:
     df_oee = cargar_oee(oee_file)
 
     tabla_final = generar_union_final(df_alds, df_mes, df_oee)
+    tabla_final_ = tabla_final[[
+    "Shift", "Parte", "MES", "ALDS Serie", "ALDS Rework",
+    "OEE Serie", "OEE Rework", "MES SCRAP", "OEE SCRAP"
+    ]]
 
     st.success("✅ Datos procesados correctamente")
     st.dataframe(tabla_final, use_container_width=True)
