@@ -64,11 +64,6 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df = scrap_fisico_series.reset_index()
         scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
 
-        st.write("👀 Shift únicos en tabla_final:", tabla_final["Shift"].unique())
-        st.write("👀 Parte únicos en tabla_final:", tabla_final["Parte"].unique())
-        st.write("👀 Shift únicos en scrap_fisico_df:", scrap_fisico_df["Shift"].unique())
-        st.write("👀 Parte únicos en scrap_fisico_df:", scrap_fisico_df["Parte"].unique())
-
         tabla_final["Shift"] = tabla_final["Shift"].str.strip()
         tabla_final["Parte"] = tabla_final["Parte"].str.strip()
         scrap_fisico_df["Shift"] = scrap_fisico_df["Shift"].str.strip()
