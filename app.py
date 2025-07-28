@@ -27,8 +27,8 @@ if "scrap_fisico" not in st.session_state:
         (shift, parte): 0
         for shift in ["1st Shift", "2nd Shift", "3rd Shift"]
         for parte in [
-            "L-0G005-1036-17",
             "L-0G005-0095-41",
+            "L-0G005-1036-17",
             "L-0G005-1015-05",
             "L-0G005-1043-12",
         ]
