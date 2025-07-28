@@ -37,12 +37,12 @@ if "scrap_fisico" not in st.session_state:
 # --- PANEL LATERAL PARA INGRESO DE CHATARRA FÍSICA ---
 st.sidebar.header("Ingreso de chatarra física")
 turnos = ["1st Shift", "2nd Shift", "3rd Shift"]
-partes = ["L-0G005-0095-41", "L-0G005-1036-17", "L-0G005-1015-05", "L-0G005-1043-12"]
+partes = ["L-0G005-1036-17", "L-0G005-0095-41", "L-0G005-1015-05", "L-0G005-1043-12"]
 
 for turno in turnos:
     st.sidebar.subheader(turno)
     for i, parte in enumerate(partes):
-        label = f"{i+1}. {parte}"
+        label = f"{i}. {parte}"
         key = f"{turno}_{parte}"
         st.session_state.scrap_fisico[(turno, parte)] = st.sidebar.number_input(
             label, min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
