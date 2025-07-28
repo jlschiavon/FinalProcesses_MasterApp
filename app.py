@@ -45,7 +45,7 @@ for turno in turnos:
         display_label = parte  # mantiene etiqueta legible
         key = f"{turno}_{parte}"  # clave única que respeta orden original
         if key not in st.session_state:
-            st.session_state[key] = 0
+            st.session_state[key] = 5
         st.session_state.scrap_fisico[(turno, parte)] = st.sidebar.number_input(
             label=display_label,
             min_value=0,
