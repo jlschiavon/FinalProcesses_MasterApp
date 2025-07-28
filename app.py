@@ -64,8 +64,26 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df = scrap_fisico_series.reset_index()
         scrap_fisico_df.columns = ["Shift", "Parte", "Físico"]
 
+        st.write("👀 Shift únicos en tabla_final:", tabla_final["Shift"].unique())
+        st.write("👀 Parte únicos en tabla_final:", tabla_final["Parte"].unique())
+        st.write("👀 Shift únicos en scrap_fisico_df:", scrap_fisico_df["Shift"].unique())
+        st.write("👀 Parte únicos en scrap_fisico_df:", scrap_fisico_df["Parte"].unique())
+
+        tabla_final["Shift"] = tabla_final["Shift"].str.strip()
+        tabla_final["Parte"] = tabla_final["Parte"].str.strip()
+        scrap_fisico_df["Shift"] = scrap_fisico_df["Shift"].str.strip()
+        scrap_fisico_df["Parte"] = scrap_fisico_df["Parte"].str.strip()
+
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
         tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
+
+        tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
+
+        # Verifica si la columna fue creada
+        if "Físico" not in tabla_final.columns:
+            st.error("❌ Error: La columna 'Físico' no se creó después del merge. Revisa los valores de Shift y Parte.")
+        else:
+            tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
 
         # Mostrar tabla
         st.success("✅ Datos procesados correctamente")
