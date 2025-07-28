@@ -45,7 +45,7 @@ mes_file = st.sidebar.file_uploader("Archivo MES (.xls)", type=["xls"])
 oee_file = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
 
 # Botón para procesar todo
-df_result = None
+tabla_final = None
 if st.sidebar.button("Procesar datos"):
     if alds_file and mes_file and oee_file:
         df_alds = cargar_alds(alds_file)
@@ -64,12 +64,12 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df = scrap_fisico_series.reset_index()
         scrap_fisico_df.columns = ["Shift", "Parte", "Físico"]
 
-        tabla_final = pd.merge(df_result, scrap_fisico_df, on=["Shift", "Parte"], how="left")
+        tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
         tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
 
         # Mostrar tabla
         st.success("✅ Datos procesados correctamente")
-        st.dataframe(df_result, use_container_width=True)
+        st.dataframe(tabla_final, use_container_width=True)
 
         # Exportar Excel
         output_path = "tabla_final_completa.xlsx"
