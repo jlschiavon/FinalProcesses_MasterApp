@@ -42,10 +42,11 @@ partes = ["L-0G005-1036-17", "L-0G005-0095-41", "L-0G005-1015-05", "L-0G005-1043
 for turno in turnos:
     st.sidebar.subheader(turno)
     for parte in partes:
-        key = f"{turno}_{parte}"
-        st.session_state.scrap_fisico[(turno, parte)] = st.sidebar.number_input(
-            f"{parte}", min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
+        key = f"scrap_{turno}_{parte}".replace(" ", "_").replace("-", "_")
+        valor_input = st.sidebar.number_input(
+            f"{parte} ({turno})", min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
         )
+        st.session_state.scrap_fisico[(turno, parte)] = valor_input
 
 # --- Carga de archivos ---
 st.sidebar.header("Carga de archivos")
