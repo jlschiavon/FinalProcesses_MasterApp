@@ -54,7 +54,7 @@ if st.sidebar.button("Procesar datos"):
     
         tabla_final = generar_union_final(df_alds, df_mes, df_oee)
 
-        # Agregar columna "Físico" desde el scrap ingresado
+        # Agregar columna "Fisico" desde el scrap ingresado
         scrap_fisico_series = pd.Series(
             {
                 (shift, parte): cantidad
@@ -62,7 +62,7 @@ if st.sidebar.button("Procesar datos"):
             }
         )
         scrap_fisico_df = scrap_fisico_series.reset_index()
-        scrap_fisico_df.columns = ["Shift", "Parte", "Físico"]
+        scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
 
         st.write("👀 Shift únicos en tabla_final:", tabla_final["Shift"].unique())
         st.write("👀 Parte únicos en tabla_final:", tabla_final["Parte"].unique())
@@ -75,15 +75,15 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df["Parte"] = scrap_fisico_df["Parte"].str.strip()
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
-        tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
+        tabla_final["Fisico"] = tabla_final["Fisico"].fillna(0).astype(int)
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
 
         # Verifica si la columna fue creada
-        if "Físico" not in tabla_final.columns:
-            st.error("❌ Error: La columna 'Físico' no se creó después del merge. Revisa los valores de Shift y Parte.")
+        if "Fisico" not in tabla_final.columns:
+            st.error("❌ Error: La columna 'Fisico' no se creó después del merge. Revisa los valores de Shift y Parte.")
         else:
-            tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
+            tabla_final["Fisico"] = tabla_final["Fisico"].fillna(0).astype(int)
 
         # Mostrar tabla
         st.success("✅ Datos procesados correctamente")
