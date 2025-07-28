@@ -69,7 +69,7 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df["Shift"] = scrap_fisico_df["Shift"].str.strip()
         scrap_fisico_df["Parte"] = scrap_fisico_df["Parte"].str.strip()
 
-        tabla_final["Fisico"] = scrap_fisico_df["Fisico"].astype(int)
+        tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
 
         # Verifica si la columna fue creada
         if "Fisico" not in tabla_final.columns:
