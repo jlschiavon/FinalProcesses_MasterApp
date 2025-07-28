@@ -81,12 +81,6 @@ if st.sidebar.button("Procesar datos"):
         tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
         tabla_final = tabla_final.set_index(["Shift", "Parte"]).reindex(index_completo, fill_value=0).reset_index()
 
-        # Verifica si la columna fue creada
-        if "Fisico" not in tabla_final.columns:
-            st.error("❌ Error: La columna 'Fisico' no se creó después del merge. Revisa los valores de Shift y Parte.")
-        else:
-            tabla_final["Fisico"] = tabla_final["Fisico"].fillna(0).astype(int)
-
         # Mostrar tabla
         st.success("✅ Datos procesados correctamente")
         st.dataframe(tabla_final, use_container_width=True)
