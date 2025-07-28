@@ -12,6 +12,15 @@ from io import BytesIO
 st.set_page_config(page_title="Master Daily Quantities Tracking CVT Final Processes", layout="wide")
 st.title("Master Daily Quantities Tracking CVT Final Processes")
 
+shifts = ["1st Shift", "2nd Shift", "3rd Shift"]
+orden_partes = [
+    "L-0G005-1036-17",
+    "L-0G005-0095-41",
+    "L-0G005-1015-05",
+    "L-0G005-1043-12"
+]
+index_completo = pd.MultiIndex.from_product([shifts, orden_partes], names=["Shift", "Parte"])
+
 # Variables de estado para almacenar chatarra fisica
 if "scrap_fisico" not in st.session_state:
     st.session_state.scrap_fisico = {
@@ -70,6 +79,7 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df["Parte"] = scrap_fisico_df["Parte"].str.strip()
 
         tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
+        tabla_final = tabla_final.set_index(["Shift", "Parte"]).reindex(index_completo, fill_value=0).reset_index()
 
         # Verifica si la columna fue creada
         if "Fisico" not in tabla_final.columns:
