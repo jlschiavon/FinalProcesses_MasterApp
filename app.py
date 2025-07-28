@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import os
 from datetime import datetime
-from utils.load_clean_alds import cargar_y_limpiar_alds
-from utils.load_clean_mes import cargar_y_limpiar_mes
-from utils.load_clean_oee import cargar_y_limpiar_oee
+from utils.load_clean_alds import cargar_alds
+from utils.load_clean_mes import cargar_mes
+from utils.load_clean_oee import cargar_oee
 from utils.helpers import unir_datos
 
 # Configuracion de pagina
