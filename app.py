@@ -43,10 +43,15 @@ for turno in turnos:
     st.sidebar.subheader(turno)
     for parte in partes:
         key = f"scrap_{turno}_{parte}".replace(" ", "_").replace("-", "_")
-        valor_input = st.sidebar.number_input(
-            f"{parte} ({turno})", min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
+        st.sidebar.number_input(
+            f"{parte}", min_value=0, step=1, key=key, value=st.session_state.scrap_fisico[(turno, parte)]
         )
-        st.session_state.scrap_fisico[(turno, parte)] = valor_input
+
+# Actualizar session_state.scrap_fisico **después**
+for turno in turnos:
+    for parte in partes:
+        key = f"scrap_{turno}_{parte}".replace(" ", "_").replace("-", "_")
+        st.session_state.scrap_fisico[(turno, parte)] = st.session_state.get(key, 0)
 
 # --- Carga de archivos ---
 st.sidebar.header("Carga de archivos")
