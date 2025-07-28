@@ -40,9 +40,9 @@ for turno in turnos:
 
 # --- Carga de archivos ---
 st.sidebar.header("Carga de archivos")
-file_alds = st.sidebar.file_uploader("Archivo ALDS (.csv)", type="csv")
-file_mes = st.sidebar.file_uploader("Archivo MES (.xls)", type=["xls"])
-file_oee = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
+alds_file = st.sidebar.file_uploader("Archivo ALDS (.csv)", type="csv")
+mes_file = st.sidebar.file_uploader("Archivo MES (.xls)", type=["xls"])
+oee_file = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
 
 # Botón para procesar todo
 df_result = None
