@@ -47,13 +47,7 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
     tabla_final.fillna(0, inplace=True)
 
     # Orden específico de columnas
-      columnas_ordenadas = [
-        "Shift", "Parte",
-        "MES",
-        "ALDS Serie", "ALDS Rework",
-        "OEE Serie", "OEE Rework", 
-        "MES SCRAP", "Físico", "OEE SCRAP"
-        ]
+    columnas_ordenadas = ["Shift", "Parte","MES","ALDS Serie", "ALDS Rework","OEE Serie", "OEE Rework", "MES SCRAP", "Físico", "OEE SCRAP"]
     
     # Agregar columnas que existan, en orden, y omitir las que no
     columnas_presentes = [col for col in columnas_ordenadas if col in tabla_final.columns]
