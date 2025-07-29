@@ -74,13 +74,6 @@ if st.sidebar.button("Procesar datos"):
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
         tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
-        tabla_final = tabla_final[[
-            "MES"
-            "ALDS Serie"
-            "ALDS Rework"
-            "OEE Serie"
-            "OEE Rework"
-        ]]
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
