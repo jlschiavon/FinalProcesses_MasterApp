@@ -73,7 +73,7 @@ if st.sidebar.button("Procesar datos"):
         scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
-        tabla_final["Físico"] = scrap_fisico_df["Fisico"].fillna(0).astype(int)
+        tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
