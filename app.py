@@ -74,6 +74,18 @@ if st.sidebar.button("Procesar datos"):
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
 
+        # Orden específico de columnas
+        columnas_ordenadas = [
+            "Shift", "Parte",
+            "MES",
+            "ALDS Serie", "ALDS Rework",
+            "OEE Serie", "OEE Rework", 
+            "MES SCRAP", "Físico", "OEE SCRAP"
+        ]
+    
+        # Agregar columnas que existan, en orden, y omitir las que no
+        columnas_presentes = [col for col in columnas_ordenadas if col in df_result.columns]
+
         # Mostrar tabla
         st.success("Datos procesados correctamente")
         st.dataframe(tabla_final, use_container_width=True)
