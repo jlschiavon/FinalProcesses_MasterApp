@@ -63,13 +63,6 @@ if st.sidebar.button("Procesar datos"):
 
     if any([df_alds is not None, df_mes is not None, df_oee is not None]):
         tabla_final = generar_union_final(df_alds, df_mes, df_oee)
-        tabla_final = tabla_final[[
-            "MES"
-            "ALDS Serie"
-            "ALDS Rework"
-            "OEE Serie"
-            "OEE Rework"
-        ]]
 
         # Agregar columna "Físico" desde el scrap ingresado
         scrap_fisico_df_series = pd.Series({
@@ -81,6 +74,13 @@ if st.sidebar.button("Procesar datos"):
 
         tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
         tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
+        tabla_final = tabla_final[[
+            "MES"
+            "ALDS Serie"
+            "ALDS Rework"
+            "OEE Serie"
+            "OEE Rework"
+        ]]
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
