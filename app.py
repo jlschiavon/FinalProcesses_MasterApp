@@ -57,33 +57,26 @@ oee_file = st.sidebar.file_uploader("Archivo OEE (.csv)", type="csv")
 # Botón para procesar todo
 tabla_final = None
 if st.sidebar.button("Procesar datos"):
-    if alds_file and mes_file and oee_file:
-        df_alds = cargar_alds(alds_file)
-        df_mes = cargar_mes(mes_file)
-        df_oee = cargar_oee(oee_file)
-    
+    df_alds = cargar_alds(alds_file) if alds_file else None
+    df_mes = cargar_mes(mes_file) if mes_file else None
+    df_oee = cargar_oee(oee_file) if oee_file else None
+
+    if any([df_alds is not None, df_mes is not None, df_oee is not None]):
         tabla_final = generar_union_final(df_alds, df_mes, df_oee)
 
-        # Agregar columna "Fisico" desde el scrap ingresado
-        scrap_fisico_series = pd.Series(
-            {
-                (shift, parte): cantidad
-                for (shift, parte), cantidad in st.session_state.scrap_fisico.items()
-            }
-        )
+        # Agregar columna "Físico" desde el scrap ingresado
+        scrap_fisico_series = pd.Series({
+            (shift, parte): cantidad
+            for (shift, parte), cantidad in st.session_state.scrap_fisico.items()
+        })
         scrap_fisico_df = scrap_fisico_series.reset_index()
-        scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
+        scrap_fisico_df.columns = ["Shift", "Parte", "Físico"]
 
-        tabla_final["Shift"] = tabla_final["Shift"].str.strip()
-        tabla_final["Parte"] = tabla_final["Parte"].str.strip()
-        scrap_fisico_df["Shift"] = scrap_fisico_df["Shift"].str.strip()
-        scrap_fisico_df["Parte"] = scrap_fisico_df["Parte"].str.strip()
-
-        tabla_final["Físico"] = scrap_fisico_df["Fisico"].astype(int)
-        tabla_final = tabla_final.set_index(["Shift", "Parte"]).reindex(index_completo, fill_value=0).reset_index()
+        tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
+        tabla_final["Físico"] = tabla_final["Físico"].fillna(0).astype(int)
 
         # Mostrar tabla
-        st.success("✅ Datos procesados correctamente")
+        st.success("Datos procesados correctamente")
         st.dataframe(tabla_final, use_container_width=True)
 
         # Exportar Excel
@@ -91,6 +84,8 @@ if st.sidebar.button("Procesar datos"):
         tabla_final.to_excel(output_path, index=False)
         with open(output_path, "rb") as f:
             st.download_button("Descargar Excel", f, file_name="tabla_final_completa.xlsx")
-
     else:
-        st.warning("Por favor, sube los tres archivos requeridos para procesar los datos.")
+        st.warning("Por favor, sube al menos uno de los archivos para procesar los datos.")
+
+
+
