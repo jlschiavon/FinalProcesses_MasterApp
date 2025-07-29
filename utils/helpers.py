@@ -11,6 +11,12 @@ def asignar_turno(ts):
         return "3rd Shift"
 
 def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
+    # Filtrar columnas del OEE si el DataFrame no es None
+    if df_oee is not None and not df_oee.empty:
+        columnas_oee_deseadas = ["Shift", "Parte", "OEE Serie", "OEE Rework", "OEE SCRAP"]
+        columnas_disponibles = [col for col in columnas_oee_deseadas if col in df_oee.columns]
+        df_oee = df_oee[columnas_disponibles]
+
     # Lista para acumular los DataFrames válidos
     dataframes = []
 
@@ -24,7 +30,11 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
         dataframes.append(df_oee)
 
     if not dataframes:
-        return pd.DataFrame(columns=["Shift", "Parte", "MES", "ALDS Serie", "ALDS Rework", "OEE Serie", "OEE Rework"])
+        return pd.DataFrame(columns=[
+            "Shift", "Parte", "MES",
+            "ALDS Serie", "ALDS Rework",
+            "OEE Serie", "OEE Rework", "OEE SCRAP"
+        ])
 
     # Realizar merge progresivo sobre "Shift" y "Parte"
     df_result = dataframes[0]
@@ -41,14 +51,18 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
         "Shift", "Parte",
         "MES",
         "ALDS Serie", "ALDS Rework",
-        "OEE Serie", "OEE Rework"
+        "OEE Serie", "OEE Rework", "OEE SCRAP"
     ]
 
     # Agregar columnas que existan, en orden, y omitir las que no
     columnas_presentes = [col for col in columnas_ordenadas if col in df_result.columns]
-    columnas_restantes = [col for col in df_result.columns if col not in columnas_presentes]
+    columnas_restantes = [col for col in df_result.columns if col not in columnas_presentes and col != "Físico"]
 
-    # Reordenar columnas
-    df_result = df_result[columnas_presentes + columnas_restantes]
+    # Reordenar columnas, luego añadir "Físico" si ya fue agregada
+    columnas_finales = columnas_presentes + columnas_restantes
+    if "Físico" in df_result.columns:
+        columnas_finales.append("Físico")
+
+    df_result = df_result[columnas_finales]
 
     return df_result
