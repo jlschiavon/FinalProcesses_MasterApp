@@ -22,8 +22,8 @@ orden_partes = [
 index_completo = pd.MultiIndex.from_product([shifts, orden_partes], names=["Shift", "Parte"])
 
 # Variables de estado para almacenar chatarra fisica
-if "scrap_fisico" not in st.session_state:
-    st.session_state.scrap_fisico = {
+if "scrap_fisico_df" not in st.session_state:
+    st.session_state.scrap_fisico_df = {
         (shift, parte): 0
         for shift in ["1st Shift", "2nd Shift", "3rd Shift"]
         for parte in [
@@ -43,8 +43,8 @@ for turno in turnos:
     st.sidebar.subheader(turno)
     for i, parte in enumerate(partes):
         orden_key = f"{i:02d}_{turno}_{parte}"
-        st.session_state.scrap_fisico[(turno, parte)] = st.sidebar.number_input(
-            f"{parte}", min_value=0, step=1, key=orden_key, value=st.session_state.scrap_fisico[(turno, parte)]
+        st.session_state.scrap_fisico_df[(turno, parte)] = st.sidebar.number_input(
+            f"{parte}", min_value=0, step=1, key=orden_key, value=st.session_state.scrap_fisico_df[(turno, parte)]
         )
 
 
@@ -65,15 +65,15 @@ if st.sidebar.button("Procesar datos"):
         tabla_final = generar_union_final(df_alds, df_mes, df_oee)
 
         # Agregar columna "Físico" desde el scrap ingresado
-        scrap_fisico_series = pd.Series({
+        scrap_fisico_df_series = pd.Series({
             (shift, parte): cantidad
-            for (shift, parte), cantidad in st.session_state.scrap_fisico.items()
+            for (shift, parte), cantidad in st.session_state.scrap_fisico_df.items()
         })
-        scrap_fisico_df = scrap_fisico_series.reset_index()
-        scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
+        scrap_fisico_df_df = scrap_fisico_df_series.reset_index()
+        scrap_fisico_df_df.columns = ["Shift", "Parte", "Fisico"]
 
-        tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
-        tabla_final["Físico"] = scrap_fisico["Fisico"].fillna(0).astype(int)
+        tabla_final = pd.merge(tabla_final, scrap_fisico_df_df, on=["Shift", "Parte"], how="left")
+        tabla_final["Físico"] = scrap_fisico_df["Fisico"].fillna(0).astype(int)
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
