@@ -12,7 +12,7 @@ def asignar_turno(ts):
 
 import pandas as pd
 
-def unir_datos(df_alds=None, df_mes=None, df_oee=None):
+def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
     # Lista para acumular los DataFrames válidos
     dataframes = []
 
