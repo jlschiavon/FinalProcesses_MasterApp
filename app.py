@@ -69,10 +69,10 @@ if st.sidebar.button("Procesar datos"):
             (shift, parte): cantidad
             for (shift, parte), cantidad in st.session_state.scrap_fisico_df.items()
         })
-        scrap_fisico_df_df = scrap_fisico_df_series.reset_index()
-        scrap_fisico_df_df.columns = ["Shift", "Parte", "Fisico"]
+        scrap_fisico_df = scrap_fisico_df_series.reset_index()
+        scrap_fisico_df.columns = ["Shift", "Parte", "Fisico"]
 
-        tabla_final = pd.merge(tabla_final, scrap_fisico_df_df, on=["Shift", "Parte"], how="left")
+        tabla_final = pd.merge(tabla_final, scrap_fisico_df, on=["Shift", "Parte"], how="left")
         tabla_final["Físico"] = scrap_fisico_df["Fisico"].fillna(0).astype(int)
 
         # Mostrar tabla
