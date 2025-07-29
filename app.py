@@ -84,7 +84,7 @@ if st.sidebar.button("Procesar datos"):
         ]
     
         # Agregar columnas que existan, en orden, y omitir las que no
-        columnas_presentes = [col for col in columnas_ordenadas if col in df_result.columns]
+        columnas_presentes = [col for col in columnas_ordenadas if col in tabla_final.columns]
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
