@@ -10,8 +10,6 @@ def asignar_turno(ts):
     else:
         return "3rd Shift"
 
-import pandas as pd
-
 def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
     # Lista para acumular los DataFrames válidos
     dataframes = []
@@ -26,20 +24,31 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
         dataframes.append(df_oee)
 
     if not dataframes:
-        return pd.DataFrame(columns=["Shift", "Parte"])  # Devolver estructura vacía si no hay nada
+        return pd.DataFrame(columns=["Shift", "Parte", "MES", "ALDS Serie", "ALDS Rework", "OEE Serie", "OEE Rework"])
 
-    # Realizar un merge progresivo usando 'Shift' y 'Parte' como claves comunes
+    # Realizar merge progresivo sobre "Shift" y "Parte"
     df_result = dataframes[0]
-
     for df in dataframes[1:]:
         df_result = pd.merge(df_result, df, on=["Shift", "Parte"], how="outer")
 
-    # Asegurar que las columnas claves existan aunque estén vacías
+    # Rellenar valores faltantes y asegurar formato
     df_result["Shift"] = df_result["Shift"].fillna("Sin turno").astype(str)
     df_result["Parte"] = df_result["Parte"].fillna("Sin parte").astype(str)
-
-    # Rellenar valores faltantes
     df_result.fillna(0, inplace=True)
 
-    return df_result
+    # Orden específico de columnas
+    columnas_ordenadas = [
+        "Shift", "Parte",
+        "MES",
+        "ALDS Serie", "ALDS Rework",
+        "OEE Serie", "OEE Rework"
+    ]
 
+    # Agregar columnas que existan, en orden, y omitir las que no
+    columnas_presentes = [col for col in columnas_ordenadas if col in df_result.columns]
+    columnas_restantes = [col for col in df_result.columns if col not in columnas_presentes]
+
+    # Reordenar columnas
+    df_result = df_result[columnas_presentes + columnas_restantes]
+
+    return df_result
