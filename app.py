@@ -76,6 +76,21 @@ if st.sidebar.button("Procesar datos"):
 
         # Mostrar tabla
         st.success("Datos procesados correctamente")
+
+        # Orden personalizado de partes
+        orden_partes = [
+            "L-0G005-1036-17",
+            "L-0G005-0095-41",
+            "L-0G005-1015-05",
+            "L-0G005-1043-12"
+        ]
+
+        # Si la columna Parte existe, aplicar orden personalizado
+        if "Parte" in df_result.columns:
+            df_result["Parte"] = pd.Categorical(df_result["Parte"], categories=orden_partes, ordered=True)
+            df_result = df_result.sort_values(by=["Shift", "Parte"])
+
+        
         st.dataframe(tabla_final, use_container_width=True)
 
         # Exportar Excel
