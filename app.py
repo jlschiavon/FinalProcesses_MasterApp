@@ -63,6 +63,13 @@ if st.sidebar.button("Procesar datos"):
 
     if any([df_alds is not None, df_mes is not None, df_oee is not None]):
         tabla_final = generar_union_final(df_alds, df_mes, df_oee)
+        tabla_final = tabla_final[[
+            "MES"
+            "ALDS Serie"
+            "ALDS Rework"
+            "OEE Serie"
+            "OEE Rework"
+        ]]
 
         # Agregar columna "Físico" desde el scrap ingresado
         scrap_fisico_df_series = pd.Series({
