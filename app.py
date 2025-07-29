@@ -86,9 +86,9 @@ if st.sidebar.button("Procesar datos"):
         ]
 
         # Si la columna Parte existe, aplicar orden personalizado
-        if "Parte" in df_result.columns:
-            df_result["Parte"] = pd.Categorical(df_result["Parte"], categories=orden_partes, ordered=True)
-            df_result = df_result.sort_values(by=["Shift", "Parte"])
+        if "Parte" in tabla_final.columns:
+            tabla_final["Parte"] = pd.Categorical(tabla_final["Parte"], categories=orden_partes, ordered=True)
+            tabla_final = tabla_final.sort_values(by=["Shift", "Parte"])
 
         
         st.dataframe(tabla_final, use_container_width=True)
