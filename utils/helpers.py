@@ -37,14 +37,14 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
         ])
 
     # Realizar merge progresivo sobre "Shift" y "Parte"
-    df_result = dataframes[0]
+    tabla_final = dataframes[0]
     for df in dataframes[1:]:
-        df_result = pd.merge(df_result, df, on=["Shift", "Parte"], how="outer")
+        tabla_final = pd.merge(tabla_final, df, on=["Shift", "Parte"], how="outer")
 
     # Rellenar valores faltantes y asegurar formato
-    df_result["Shift"] = df_result["Shift"].fillna("Sin turno").astype(str)
-    df_result["Parte"] = df_result["Parte"].fillna("Sin parte").astype(str)
-    df_result.fillna(0, inplace=True)
+    tabla_final["Shift"] = tabla_final["Shift"].fillna("Sin turno").astype(str)
+    tabla_final["Parte"] = tabla_final["Parte"].fillna("Sin parte").astype(str)
+    tabla_final.fillna(0, inplace=True)
 
     # Orden específico de columnas
       columnas_ordenadas = [
@@ -58,4 +58,6 @@ def generar_union_final(df_alds=None, df_mes=None, df_oee=None):
     # Agregar columnas que existan, en orden, y omitir las que no
     columnas_presentes = [col for col in columnas_ordenadas if col in tabla_final.columns]
 
-    return df_result
+    tabla_final = tabla_final[columnas_presentes]
+
+    return tabla_final
